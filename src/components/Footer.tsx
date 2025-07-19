@@ -1,7 +1,7 @@
 import React from 'react';
 import { Phone, Mail, MapPin, Clock, Star, Award, Users, Truck } from 'lucide-react';
 
-type ViewType = 'home' | 'services' | 'materials' | 'vehicles' | 'about' | 'contact';
+type ViewType = 'home' | 'vehicles' | 'materials' | 'about' | 'contact';
 
 interface FooterProps {
   onNavigate: (view: ViewType) => void;
@@ -58,13 +58,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-white">Auto X</h3>
-                  <p className="text-gray-400 text-sm">Construction Solutions</p>
+                  <p className="text-gray-400 text-sm">Heavy Vehicle & Material Platform</p>
                 </div>
               </div>
               <p className="text-gray-300 mb-6 leading-relaxed max-w-md">
-                Your trusted platform connecting construction professionals with verified 
-                material suppliers and vehicle owners across Sri Lanka. Direct connections, 
-                no middleman, negotiate your own terms.
+                Sri Lanka's leading platform connecting construction professionals with heavy vehicle owners 
+                and material suppliers. Direct connections, no middleman, negotiate your own terms.
               </p>
               <div className="flex space-x-4">
                 <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center hover:bg-yellow-500 cursor-pointer transition-colors group">
@@ -97,11 +96,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </li>
                 <li>
                   <button 
-                    onClick={() => onNavigate('services')}
+                    onClick={() => onNavigate('vehicles')}
                     className="hover:text-orange-400 transition-colors flex items-center group"
                   >
                     <span className="w-2 h-2 bg-orange-500 rounded-full mr-3 group-hover:scale-125 transition-transform"></span>
-                    Our Services
+                    Vehicles
                   </button>
                 </li>
                 <li>
@@ -115,20 +114,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </li>
                 <li>
                   <button 
-                    onClick={() => onNavigate('vehicles')}
-                    className="hover:text-orange-400 transition-colors flex items-center group"
-                  >
-                    <span className="w-2 h-2 bg-orange-500 rounded-full mr-3 group-hover:scale-125 transition-transform"></span>
-                    Vehicles
-                  </button>
-                </li>
-                <li>
-                  <button 
                     onClick={() => onNavigate('about')}
                     className="hover:text-orange-400 transition-colors flex items-center group"
                   >
                     <span className="w-2 h-2 bg-orange-500 rounded-full mr-3 group-hover:scale-125 transition-transform"></span>
-                    About Us
+                    About
                   </button>
                 </li>
                 <li>
@@ -137,7 +127,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     className="hover:text-orange-400 transition-colors flex items-center group"
                   >
                     <span className="w-2 h-2 bg-orange-500 rounded-full mr-3 group-hover:scale-125 transition-transform"></span>
-                    Contact
+                    Contact Us
                   </button>
                 </li>
               </ul>
@@ -174,7 +164,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   <div>
                     <div className="font-semibold text-white">Visit Us</div>
                     <div>No. 245, Lakeview Avenue</div>
-                    <div className="text-sm text-gray-400">Nugegoda, Colombo 10250</div>
+                    <div className="text-sm text-gray-400">Nugegoda, Western Province, Sri Lanka</div>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -184,7 +174,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   <div>
                     <div className="font-semibold text-white">Working Hours</div>
                     <div>Mon - Fri: 6:00 AM - 8:00 PM</div>
-                    <div className="text-sm text-gray-400">Emergency: 24/7</div>
+                    <div className="text-sm text-gray-400">Sat - Sun: 8:00 AM - 6:00 PM</div>
                   </div>
                 </div>
               </div>
@@ -198,7 +188,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-center md:text-left mb-4 md:mb-0">
-              <p>&copy; 2025 Auto X. All rights reserved.</p>
+              <p>&copy; 2025 Auto X Sri Lanka. All rights reserved.</p>
             </div>
             <div className="flex space-x-6 text-gray-400 text-sm">
               <a href="#" className="hover:text-yellow-400 transition-colors">Privacy Policy</a>
