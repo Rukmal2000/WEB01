@@ -1,15 +1,14 @@
 import React from 'react';
-import { Menu, X, Phone, Truck } from 'lucide-react';
+import { Menu, X, Phone, Truck, User } from 'lucide-react';
 import { User as UserType } from '../types';
-import { ProfileDropdown } from './ProfileDropdown';
+import { AuthModal } from './AuthModal';
 
-type ViewType = 'home' | 'services' | 'materials' | 'vehicles' | 'about' | 'contact';
+type ViewType = 'home' | 'vehicles' | 'materials' | 'about' | 'contact' | 'signup' | 'dashboard' | 'profile';
 
 interface HeaderProps {
   user: UserType | null;
-  onAuthClick?: () => void;
+  onLogin: (user: UserType) => void;
   onLogout?: () => void;
-  onUpdateProfile?: (userData: Partial<UserType>) => void;
   onMenuClick: () => void;
   isMenuOpen: boolean;
   currentView: ViewType;
@@ -18,22 +17,40 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ 
   user, 
-  onAuthClick, 
+  onLogin,
   onLogout,
-  onUpdateProfile,
   onMenuClick, 
   isMenuOpen, 
   currentView, 
   onNavigate 
 }) => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = React.useState(false);
+
   const navItems = [
     { id: 'home', label: 'Home' },
-    { id: 'services', label: 'Services' },
-    { id: 'materials', label: 'Materials' },
     { id: 'vehicles', label: 'Vehicles' },
+    { id: 'materials', label: 'Materials' },
     { id: 'about', label: 'About' },
-    { id: 'contact', label: 'Contact' }
+    { id: 'contact', label: 'Contact Us' },
+    { id: 'signup', label: 'Sign Up' }
   ];
+
+  const loggedInNavItems = [
+    { id: 'home', label: 'Home' },
+    { id: 'contact', label: 'Contact Us' },
+    { id: 'about', label: 'About Us' }
+  ];
+
+  const handleLogin = (userData: UserType) => {
+    onLogin(userData);
+    setIsAuthModalOpen(false);
+  };
+
+  const handleLogout = () => {
+    if (onLogout) {
+      onLogout();
+    }
+  };
 
   return (
     <>
@@ -82,7 +99,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             </div>
             
-            <nav className="hidden lg:flex space-x-8">
+            <nav className={`hidden lg:flex space-x-8 ${user ? 'lg:hidden' : ''}`}>
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -96,20 +113,55 @@ export const Header: React.FC<HeaderProps> = ({
               ))}
             </nav>
 
+            {/* Logged in user navigation */}
+            {user && (
+              <nav className="hidden lg:flex space-x-8">
+                {loggedInNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => onNavigate(item.id as ViewType)}
+                    className={`text-gray-700 hover:text-yellow-600 transition-colors font-medium py-2 border-b-2 border-transparent hover:border-yellow-500 ${
+                      currentView === item.id ? 'text-yellow-600 border-yellow-500' : ''
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
+            )}
+
             <div className="flex items-center space-x-4">
               {user ? (
-                <ProfileDropdown 
-                  user={user} 
-                  onLogout={onLogout || (() => {})} 
-                  onUpdateProfile={onUpdateProfile || (() => {})} 
-                />
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={() => onNavigate('profile')}
+                    className="flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-4 py-2 rounded-xl hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl"
+                  >
+                    <User size={16} />
+                    <span>{user.name.split(' ')[0]}</span>
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="text-gray-700 hover:text-red-600 transition-colors font-medium"
+                  >
+                    Logout
+                  </button>
+                </div>
               ) : (
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={() => setIsAuthModalOpen(true)}
+                    className="text-gray-700 hover:text-yellow-600 transition-colors font-medium"
+                  >
+                    Log In
+                  </button>
                 <button
-                  onClick={onAuthClick}
+                    onClick={() => onNavigate('signup')}
                   className="flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-6 py-3 rounded-xl hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl"
                 >
-                  <span>Sign In</span>
+                    <span>Sign Up</span>
                 </button>
+                </div>
               )}
               
               <button
@@ -126,7 +178,7 @@ export const Header: React.FC<HeaderProps> = ({
         {isMenuOpen && (
           <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
             <div className="px-4 py-4 space-y-3">
-              {navItems.map((item) => (
+              {(user ? [...loggedInNavItems, { id: 'profile', label: 'Profile' }] : navItems).map((item) => (
                 <button
                   key={item.id}
                   onClick={() => onNavigate(item.id as ViewType)}
@@ -137,9 +189,23 @@ export const Header: React.FC<HeaderProps> = ({
                   {item.label}
                 </button>
               ))}
+              {user && (
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg font-medium transition-colors"
+                >
+                  Logout
+                </button>
+              )}
             </div>
           </div>
         )}
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onLogin={handleLogin}
+      />
       </header>
     </>
   );

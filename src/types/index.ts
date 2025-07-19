@@ -3,6 +3,7 @@ export interface User {
   name: string;
   email: string;
   phone: string;
+  role: 'consumer' | 'vehicle_owner' | 'material_supplier';
   isAuthenticated: boolean;
   address?: string;
   bio?: string;
